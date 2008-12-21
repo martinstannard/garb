@@ -3,12 +3,12 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 class TestChromosome < Test::Unit::TestCase
 
   def setup
-    @chromosome = Genetic::Chromosome.new({:genes => '1' * 20})
-    @other = Genetic::Chromosome.new({:genes => '0' * 20})
+    @chromosome = Garb::Chromosome.new({:genes => '1' * 20})
+    @other = Garb::Chromosome.new({:genes => '0' * 20})
   end
 
   def test_create
-    chrom = Genetic::Chromosome.new
+    chrom = Garb::Chromosome.new
     assert chrom.genes.size == 20
   end
 
@@ -50,12 +50,12 @@ class TestChromosome < Test::Unit::TestCase
   end
 
   def test_mutate
-    @chromosome.mutate(0)
-    assert @chromosome.genes.count('0') == 1
-    assert @chromosome.genes == '0' + '1' * 19
-    @chromosome.mutate(1)
-    assert @chromosome.genes.count('0') == 2
-    assert @chromosome.genes == '00' + '1' * 18
+    @chromosome.mutate(1.0)
+    assert @chromosome.genes.count('0') == 20
+    @chromosome.mutate(1.0)
+    assert @chromosome.genes.count('1') == 20
+    @chromosome.mutate(0.0)
+    assert @chromosome.genes.count('1') == 20
   end
 
 end
@@ -63,7 +63,7 @@ end
 class TestPopulation < Test::Unit::TestCase
 
   def setup
-    @population = Genetic::Population.new(20)
+    @population = Garb::Population.new(20)
     @population.each {|p| p.fitness = 1 }
   end
 
@@ -71,24 +71,24 @@ class TestPopulation < Test::Unit::TestCase
     assert @population.pop.size == 20
   end
 
-  def test_sum_fitness
-    @population.each {|p| p.fitness = 1 }
-    @population.sum_fitness == 20
-    @population.each {|p| p.fitness = 5 }
-    @population.sum_fitness == 100
+  def test_fitness_sumation
+    @population.fitness_sumation
+    assert @population.sum_fitness == 20
+    20.times { |t| assert @population.pop[t].sum_fitness == t + 1 }
   end
 
   def test_sort
     @population.each {|p| p.fitness = rand(100) }
     @population.sort
-    puts @population.pop.to_yaml
     (0..@population.size-2).each do |index|
       assert @population.pop[index].fitness <= @population.pop[index+1].fitness
     end
   end
 
   def test_select
+    @population.fitness_sumation
     assert @population.select(0.0) == @population.pop[0]
+    assert @population.select(@population.sum_fitness) == @population.pop[-1]
   end
 
 end

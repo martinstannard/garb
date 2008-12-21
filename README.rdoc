@@ -1,32 +1,37 @@
-= genetic
+= garb
 
 * FIX (url)
 
 == DESCRIPTION:
 
-FIX (describe your package)
+a genetic algorithm library for Ruby
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+*
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+require 'garb'
+include Garb
+
+p = Population.new
+
+p.generations 20
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* nothing
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install garb
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME full name
+Copyright (c) 2008 Martin Stannard
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
